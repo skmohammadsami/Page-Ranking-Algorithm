@@ -1,0 +1,30 @@
+📚 What is PageRank?
+PageRank is an algorithm developed by Google to rank web pages based on their importance. 
+The idea is:
+A page is important if other important pages link to it.
+It works like a "vote" system, but votes from important pages carry more weight.
+📈 The PageRank Formula:
+  PR(N) = (1 - d)/N + d * (sum of PR(from each incoming node) / outgoing links of that node)
+🧠 Why MapReduce?
+Because in real-world scenarios (like Google's web graph), the graph has billions of nodes and edges. So you can’t compute PageRank on a single machine — it needs parallel, distributed computing → That’s where MapReduce helps.
+
+⚙️ How PageRank Fits into MapReduce
+Think of it like a series of steps repeated multiple times (iterations), where in each iteration:
+✅ Mappers do two things:
+1.Send PageRank to neighbors (like giving out "importance points").
+2.Pass along the structure of the graph (which node is linked to which others).
+✅ Reducers do two things:
+1.Collect all the votes (PageRank contributions) a node receives.
+2.Calculate the new PageRank using the formula and emit updated PageRank with structure for the next iteration.
+
+Simple Example:
+  Dataset:
+  A → B
+  B → C
+  C → A
+All start with rank 1.0.
+
+Iteration 1:
+A gives rank to B → B gets 1.0
+B gives to C → C gets 1.0
+C gives to A → A gets 1.0 → All still have 1.0, but with more complex graphs, values keep redistributing until stable.
